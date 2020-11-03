@@ -65,7 +65,7 @@ class LitModel(pl.LightningModule):
     def configure_optimizers(self):
         optimizer = build_from_config(cfg.optimizer, OPTIMIZERS, default_args={'params': self.model.parameters()})
         scheduler = build_from_config(cfg.scheduler, SCHEDULERS, default_args={'optimizer': optimizer})
-        return optimizer, scheduler
+        return [optimizer], [scheduler]
 
     def train_dataloader(self):
         transform_train = transforms.Compose([
