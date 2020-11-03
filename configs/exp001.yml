@@ -12,12 +12,12 @@ scheduler:
 
 train:
     num_epochs: 200
-    precision: 16
+    precision: 32
     
 model:
     name: san
     params:
-        sa_type:1
+        sa_type: 1
         layers: [3, 3, 3, 3]
         kernels: [3, 3, 3, 3]
         num_classes: 10
