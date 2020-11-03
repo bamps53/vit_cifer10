@@ -1,0 +1,24 @@
+exp_id: exp008
+
+optimizer:
+    name: Adam
+    params:
+        lr: 1.0e-3
+
+scheduler:
+    name: HalfCosineAnnealingLR
+    params:
+        T_max: 10
+
+train:
+    num_epochs: 200
+    precision: 32
+    
+model:
+    name: create_model
+    params:
+        model_name: resnet50
+        num_classes: 10
+    resume_from:
+    
+seed: 0
