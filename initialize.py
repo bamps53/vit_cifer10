@@ -1,11 +1,15 @@
 from ptbox.registry import Registry
 import torch
 import albumentations
+from timm import create_model
 from ptbox import MODELS, LOSSES, OPTIMIZERS, SCHEDULERS, METRICS, TRANSFORMS
 
 def initialize():
     from models import san
     from schedulers import HalfCosineAnnealingLR
+
+    # models
+    MODELS.register(create_model)
 
     # losses
     for k, v in torch.nn.__dict__.items():
