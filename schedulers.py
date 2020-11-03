@@ -1,7 +1,10 @@
 import math
 
 from torch.optim.lr_scheduler import _LRScheduler
+import ptbox
 
+
+@ptbox.SCHEDULERS.register
 class HalfCosineAnnealingLR(_LRScheduler):
 
     def __init__(self, optimizer, T_max, range=2, last_epoch=-1):

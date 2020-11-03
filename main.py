@@ -17,14 +17,21 @@ from pytorch_lightning import seed_everything
 
 from models.SAN import san
 from schedulers import HalfCosineAnnealingLR
-
+from ptbox import (
+    MODELS, LOSSES, OPTIMIZERS, SCHEDULERS, METRICS,
+    build_from_config,
+    build_from_config_list, 
+    build_from_config_dict
+    )
+from initialize import initialize
+initialize()
 
 class LitModel(pl.LightningModule):
     
     def __init__(self, cfg):
         super().__init__()
         self.cfg = cfg
-        self.model = san(sa_type=1, layers=(3, 3, 3, 3, 3), kernels=[3, 3, 3, 3, 3], num_classes=10)
+        self.model = san(sa_type=1, layers=(3, 3, 3, 3), kernels=[3, 3, 3, 3], num_classes=10)
 
     def forward(self, x):
         x = self.model(x)
@@ -34,6 +41,10 @@ class LitModel(pl.LightningModule):
         x, y = batch
         logits = self(x)
         loss = F.nll_loss(logits, y)
+        preds = torch.argmax(logits, dim=1)
+        acc = accuracy(preds, y)
+        self.log('train_loss', loss, prog_bar=True)
+        self.log('train_acc', acc, prog_bar=True)
         return loss
 
     def validation_step(self, batch, batch_idx):
@@ -53,9 +64,11 @@ class LitModel(pl.LightningModule):
         return self.validation_step(batch, batch_idx)
 
     def configure_optimizers(self):
-        optimizer = torch.optim.Adam(self.parameters(), lr=1.0e-3)
-        scheduler = HalfCosineAnnealingLR(optimizer, T_max=10)
-        return optimizer
+        optimizer = build_from_config(cfg.optimizer, OPTIMIZERS, default_args={'params': self.model.parameters()})
+        scheduler = build_from_config(cfg.scheduler, SCHEDULERS, default_args={'optimizer': optimizer})
+        # optimizer = torch.optim.Adam(self.parameters(), lr=1.0e-3)
+        # scheduler = HalfCosineAnnealingLR(optimizer, T_max=10)
+        return optimizer, scheduler
 
     def train_dataloader(self):
         transform_train = transforms.Compose([
