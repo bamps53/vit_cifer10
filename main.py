@@ -19,12 +19,9 @@ from models.SAN import san
 
 class LitModel(pl.LightningModule):
     
-    def __init__(self, learning_rate=1e-3):
+    def __init__(self, cfg):
         super().__init__()
-        self.learning_rate = learning_rate
-
-        # Define PyTorch model
-        # self.model = timm.create_model('resnet18', num_classes=10)
+        self.cfg = cfg
         self.model = san(sa_type=1, layers=(3, 3, 3, 3, 3), kernels=[3, 3, 3, 3, 3], num_classes=10)
 
     def forward(self, x):
@@ -54,7 +51,7 @@ class LitModel(pl.LightningModule):
         return self.validation_step(batch, batch_idx)
 
     def configure_optimizers(self):
-        optimizer = torch.optim.Adam(self.parameters(), lr=self.learning_rate)
+        optimizer = torch.optim.Adam(self.parameters(), lr=1.0e-3)
         return optimizer
 
     def train_dataloader(self):
