@@ -1,0 +1,26 @@
+exp_name: exp001
+
+data:
+    df_path: data/train_df.csv
+    gcs: False
+    period: 5
+    batch_size: 64
+
+train:
+    num_epochs: 160
+    precsion: 16
+    
+model:
+    weight_path: /content/drive/My Drive/kaggle-bird/input/pannscnn14-decisionlevelatt-weight/Cnn14_DecisionLevelAtt_mAP0.425.pth
+    params:
+        sample_rate: 32000
+        window_size: 1024
+        hop_size: 320
+        mel_bins: 64
+        fmin: 50
+        fmax: 14000
+        classes_num: 264
+    resume_from:
+    fp16: False 
+
+seed: 0
