@@ -15,7 +15,7 @@ from pytorch_lightning.metrics.functional import accuracy
 from pytorch_lightning.loggers import WandbLogger
 from pytorch_lightning import seed_everything
 
-from .models.SAN import san
+from models.SAN import san
 
 class LitModel(pl.LightningModule):
     

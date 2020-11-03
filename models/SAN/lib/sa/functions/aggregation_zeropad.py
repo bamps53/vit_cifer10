@@ -2,7 +2,7 @@ import torch
 from torch.autograd import Function
 from torch.nn.modules.utils import _pair
 
-from lib.sa.functions.utils import Dtype, Stream, load_kernel
+from .utils import Dtype, Stream, load_kernel
 
 
 CUDA_NUM_THREADS = 1024
