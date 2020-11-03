@@ -21,6 +21,8 @@ from ptbox import (
     build_from_config_list, 
     build_from_config_dict
     )
+
+from mixup import mixup_data, mixup_criterion
 from initialize import initialize
 initialize()
 
@@ -30,6 +32,7 @@ class LitModel(pl.LightningModule):
         super().__init__()
         self.cfg = cfg
         self.model = build_from_config(cfg.model, MODELS)
+        self.criterion = nn.CrossEntropyLoss()
         #san(sa_type=1, layers=(3, 3, 3, 3), kernels=[3, 3, 3, 3], num_classes=10)
 
     def forward(self, x):
@@ -38,12 +41,19 @@ class LitModel(pl.LightningModule):
 
     def training_step(self, batch, batch_idx):
         x, y = batch
-        logits = self(x)
-        loss = F.nll_loss(logits, y)
+        if self.cfg.train.mixup:
+            x, ya, yb, lam = mixup_data(x, y)
+            logits = self(x)
+            loss = mixup_criterion(self.criterion, logits, ya, yb, lam)
+        else:
+            logits = self(x)
+            loss = self.criterion(logits, y)
+        
         preds = torch.argmax(logits, dim=1)
-        acc = accuracy(preds, y)
         self.log('train_loss', loss, prog_bar=True)
-        self.log('train_acc', acc, prog_bar=True)
+        if not self.cfg.train.mixup:
+            acc = accuracy(preds, y)
+            self.log('train_acc', acc, prog_bar=True)
         return loss
 
     def validation_step(self, batch, batch_idx):
