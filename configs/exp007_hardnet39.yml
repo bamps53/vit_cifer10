@@ -1,4 +1,4 @@
-exp_id: exp006
+exp_id: exp007
 
 optimizer:
     name: Adam
@@ -17,7 +17,7 @@ train:
 model:
     name: HarDNet
     params:
-        arch: 68
+        arch: 39
         num_classes: 10
     resume_from:
     
