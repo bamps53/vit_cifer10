@@ -15,7 +15,7 @@ train:
     precision: 32
     
 model:
-    name: timm
+    name: create_model
     params:
         model_name: resnet18
         num_classes: 10
