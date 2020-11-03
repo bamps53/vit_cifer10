@@ -15,8 +15,6 @@ from pytorch_lightning.metrics.functional import accuracy
 from pytorch_lightning.loggers import WandbLogger
 from pytorch_lightning import seed_everything
 
-from models.SAN import san
-from schedulers import HalfCosineAnnealingLR
 from ptbox import (
     MODELS, LOSSES, OPTIMIZERS, SCHEDULERS, METRICS,
     build_from_config,
@@ -31,7 +29,8 @@ class LitModel(pl.LightningModule):
     def __init__(self, cfg):
         super().__init__()
         self.cfg = cfg
-        self.model = san(sa_type=1, layers=(3, 3, 3, 3), kernels=[3, 3, 3, 3], num_classes=10)
+        self.model = build_from_config(cfg.model, MODELS)
+        #san(sa_type=1, layers=(3, 3, 3, 3), kernels=[3, 3, 3, 3], num_classes=10)
 
     def forward(self, x):
         x = self.model(x)
@@ -66,8 +65,6 @@ class LitModel(pl.LightningModule):
     def configure_optimizers(self):
         optimizer = build_from_config(cfg.optimizer, OPTIMIZERS, default_args={'params': self.model.parameters()})
         scheduler = build_from_config(cfg.scheduler, SCHEDULERS, default_args={'optimizer': optimizer})
-        # optimizer = torch.optim.Adam(self.parameters(), lr=1.0e-3)
-        # scheduler = HalfCosineAnnealingLR(optimizer, T_max=10)
         return optimizer, scheduler
 
     def train_dataloader(self):
