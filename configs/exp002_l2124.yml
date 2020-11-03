@@ -1,0 +1,26 @@
+exp_id: exp002
+
+optimizer:
+    name: Adam
+    params:
+        lr: 1.0e-3
+
+scheduler:
+    name: HalfCosineAnnealingLR
+    params:
+        T_max: 10
+
+train:
+    num_epochs: 200
+    precision: 32
+    
+model:
+    name: san
+    params:
+        sa_type: 1
+        layers: [2, 1, 2, 4]
+        kernels: [3, 3, 3, 3]
+        num_classes: 10
+    resume_from:
+    
+seed: 0
