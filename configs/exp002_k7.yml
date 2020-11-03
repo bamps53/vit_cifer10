@@ -1,4 +1,4 @@
-exp_id: exp001
+exp_id: exp002
 
 optimizer:
     name: Adam
