@@ -1,15 +1,7 @@
 from ptbox.registry import Registry
 import torch
 import albumentations
-
-MODELS = Registry('models')
-LOSSES = Registry('losses')
-OPTIMIZERS = Registry('optimizers')
-SCHEDULERS = Registry('schedulers')
-DATASETS = Registry('datasets')
-CALLBACKS = Registry('callbacks')
-METRICS = Registry('metrics')
-TRANSFORMS = Registry('transforms')
+from ptbox import MODELS, LOSSES, OPTIMIZERS, SCHEDULERS, METRICS, TRANSFORMS
 
 def initialize():
     from models import san

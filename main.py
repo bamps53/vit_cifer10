@@ -16,11 +16,12 @@ from pytorch_lightning.loggers import WandbLogger
 from pytorch_lightning import seed_everything
 
 from ptbox import (
+    MODELS, LOSSES, OPTIMIZERS, SCHEDULERS, METRICS,
     build_from_config,
     build_from_config_list, 
     build_from_config_dict
     )
-from initialize import initialize, MODELS, LOSSES, OPTIMIZERS, SCHEDULERS, METRICS
+from initialize import initialize
 initialize()
 
 class LitModel(pl.LightningModule):
