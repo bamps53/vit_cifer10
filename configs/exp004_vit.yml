@@ -1,0 +1,31 @@
+exp_id: exp004
+
+optimizer:
+    name: Adam
+    params:
+        lr: 1.0e-3
+
+scheduler:
+    name: HalfCosineAnnealingLR
+    params:
+        T_max: 10
+
+train:
+    num_epochs: 200
+    precision: 32
+    
+model:
+    name: ViT
+    params:
+        image_size: 32
+        patch_size: 2
+        num_classes: 10
+        dim: 64
+        depth: 3
+        heads: 4
+        mlp_dim: 256
+        dropout: 0.1
+        emb_dropout: 0.1
+    resume_from:
+    
+seed: 0
