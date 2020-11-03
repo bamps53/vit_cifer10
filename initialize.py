@@ -1,4 +1,4 @@
-from ptbox import Registry
+from ptbox.registry import Registry
 import torch
 import albumentations
 
