@@ -16,6 +16,8 @@ from pytorch_lightning.loggers import WandbLogger
 from pytorch_lightning import seed_everything
 
 from models.SAN import san
+from schedulers import HalfCosineAnnealingLR
+
 
 class LitModel(pl.LightningModule):
     
@@ -52,6 +54,7 @@ class LitModel(pl.LightningModule):
 
     def configure_optimizers(self):
         optimizer = torch.optim.Adam(self.parameters(), lr=1.0e-3)
+        scheduler = HalfCosineAnnealingLR(optimizer, T_max=10)
         return optimizer
 
     def train_dataloader(self):
